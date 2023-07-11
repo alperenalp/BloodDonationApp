@@ -16,16 +16,17 @@ namespace BloodDonationApp.WebApp.Controllers
             _hospitalService = hospitalService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
 
-        public IActionResult Login(string? returnUrl)
+        public async Task<IActionResult> Login(string? returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Login(ValidateHospitalLoginRequest request, string? returnUrl)
@@ -55,7 +56,7 @@ namespace BloodDonationApp.WebApp.Controllers
             return View();
         }
 
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
             return View();
         }

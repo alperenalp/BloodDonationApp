@@ -41,7 +41,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="BloodId" class="control-label"></label>
-                <input asp-for="BloodId" class="form-control" />
+                <select asp-for="BloodId" class="form-control" asp-items="ViewBag.Bloods">
+                    <option hidden disabled selected>Lütfen kan grubunuzu seçiniz</option>
+                </select>
                 <span asp-validation-for="BloodId" class="text-danger"></span>
             </div>
             <div class="form-group text-center mt-4">

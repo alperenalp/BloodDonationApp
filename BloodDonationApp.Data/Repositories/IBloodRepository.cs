@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace BloodDonationApp.Data.Repositories
 {
-    public interface IHospitalRepository : IRepository<Hospital>
+    public interface IBloodRepository : IRepository<Blood>
     {
-        
+
     }
 }

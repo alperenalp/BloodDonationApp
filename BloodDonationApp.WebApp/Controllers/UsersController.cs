@@ -2,27 +2,29 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using BloodDonationApp.Entities;
 using BloodDonationApp.Business.DTOs.Requests;
 using BloodDonationApp.Business.Services;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BloodDonationApp.WebApp.Controllers
 {
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IBloodService _bloodService;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IBloodService bloodService)
         {
             _userService = userService;
+            _bloodService = bloodService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
 
-        public IActionResult Login(string? returnUrl)
+        public async Task<IActionResult> Login(string? returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
@@ -58,8 +60,9 @@ namespace BloodDonationApp.WebApp.Controllers
             return View();
         }
 
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
+            ViewBag.Bloods = await getBloodTypesForSelecListAsync();
             return View();
         }
 
@@ -80,10 +83,17 @@ namespace BloodDonationApp.WebApp.Controllers
             return Redirect("/");
         }
 
-        public IActionResult AccessDenied()
+        public async Task<IActionResult> AccessDenied()
         {
             return View();
         }
+
+        private async Task<IEnumerable<SelectListItem>> getBloodTypesForSelecListAsync()
+        {
+            var bloods = await _bloodService.GetAllBloodsAsync();
+            return bloods.Select(x => new SelectListItem { Text = x.Type, Value = x.Id.ToString() });
+        }
+
 
     }
 }
