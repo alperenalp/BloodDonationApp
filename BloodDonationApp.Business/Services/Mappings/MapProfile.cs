@@ -14,9 +14,15 @@ namespace BloodDonationApp.Business.Services.Mappings
     {
         public MapProfile()
         {
+            //Users
             CreateMap<User, UserValidateResponse>().ReverseMap();
             CreateMap<User, ValidateUserLoginRequest>().ReverseMap();
             CreateMap<User, CreateNewUserRequest>().ReverseMap();
+
+            //Hospitals
+            CreateMap<Hospital, HospitalValidateResponse>().ReverseMap();
+            CreateMap<Hospital, ValidateHospitalLoginRequest>().ReverseMap();
+            CreateMap<Hospital, CreateNewHospitalRequest>().ReverseMap();
         }
     }
 }

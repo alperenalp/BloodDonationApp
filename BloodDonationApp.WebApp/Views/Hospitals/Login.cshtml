@@ -1,4 +1,4 @@
-﻿@model ValidateUserLoginRequest
+﻿@model ValidateHospitalLoginRequest
 
 @{
     ViewData["Title"] = "Login";
@@ -8,7 +8,7 @@
 <div class="d-flex align-items-center justify-content-center" style="height:600px;">
 
     <div class="col-md-8 p-5 bg-light">
-        <h4 class="text-center">Kullanıcı Giriş Sayfası</h4>
+        <h4 class="text-center">Hastane Giriş Sayfası</h4>
 
         <form asp-action="Login" asp-route-returnUrl="@ViewBag.ReturnUrl">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -27,15 +27,14 @@
             </div>
         </form>
         <div class="text-center mt-5">
-            <p>Üye değil misin? <a asp-action="Register">Kayıt ol</a></p>
+            <p>Üye değil misin? <a asp-action="Register">Hastane Üyeliği Oluştur</a></p>
         </div>
-        <div class ="mt-5">
+        <div class="mt-5">
             <a asp-controller="Home" asp-action="Index">Anasayfaya dön.</a>
         </div>
     </div>
 
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
