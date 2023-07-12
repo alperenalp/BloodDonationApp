@@ -29,11 +29,10 @@ namespace BloodDonationApp.Business.Services
             return _mapper.Map<UserValidateResponse>(response);
         }
 
-        public async Task CreateUserAsync(CreateNewUserRequest request)
+        public async Task<int> CreateUserAsync(CreateNewUserRequest request)
         {
             var user = _mapper.Map<User>(request);
-            user.IsAdmin = false;
-            await _userRepository.CreateAsync(user);
+            return await _userRepository.CreateAsync(user);
         }
     }
 }

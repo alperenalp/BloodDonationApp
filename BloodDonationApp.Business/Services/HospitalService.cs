@@ -22,17 +22,16 @@ namespace BloodDonationApp.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<HospitalValidateResponse> ValidateHospitalAsync(ValidateHospitalLoginRequest request)
-        {
-            var hospitals = await _hospitalRepository.GetAllAsync();
-            var response = hospitals.SingleOrDefault(x => x.Username == request.Username && x.Password == request.Password);
-            return _mapper.Map<HospitalValidateResponse>(response);
-        }
-
         public async Task CreateHospitalAsync(CreateNewHospitalRequest request)
         {
             var hospital = _mapper.Map<Hospital>(request);
             await _hospitalRepository.CreateAsync(hospital);
+        }
+
+        public async Task<IEnumerable<HospitalDisplayResponse>> GetHospitalListAsync()
+        {
+            var hospitals = await _hospitalRepository.GetAllAsync();
+            return _mapper.Map<IEnumerable<HospitalDisplayResponse>>(hospitals);
         }
     }
 }

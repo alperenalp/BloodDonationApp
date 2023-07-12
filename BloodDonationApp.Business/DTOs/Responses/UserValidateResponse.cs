@@ -24,6 +24,6 @@ namespace BloodDonationApp.Business.DTOs.Responses
 
         public int BloodId { get; set; }
 
-        public bool IsAdmin { get; set; }
+        public string Type { get; set; }
     }
 }

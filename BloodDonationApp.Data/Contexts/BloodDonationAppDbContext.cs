@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BloodDonationApp.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace BloodDonationApp.Contexts;
+namespace BloodDonationApp.Data.Contexts;
 
 public partial class BloodDonationAppDbContext : DbContext
 {
@@ -28,7 +28,6 @@ public partial class BloodDonationAppDbContext : DbContext
     {
         modelBuilder.Entity<Blood>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Type)
                 .HasMaxLength(10)
                 .IsUnicode(false);
@@ -36,16 +35,18 @@ public partial class BloodDonationAppDbContext : DbContext
 
         modelBuilder.Entity<Hospital>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Address).HasMaxLength(50);
             entity.Property(e => e.Name).HasMaxLength(50);
-            entity.Property(e => e.Password).HasMaxLength(50);
             entity.Property(e => e.Phone)
                 .HasMaxLength(15)
                 .IsUnicode(false);
-            entity.Property(e => e.Username).HasMaxLength(50);
 
-            entity.HasMany(d => d.Users).WithMany(p => p.Hospitals)
+            entity.HasOne(d => d.User).WithMany(p => p.Hospitals)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Hospitals_Users");
+
+            entity.HasMany(d => d.Users).WithMany(p => p.HospitalsNavigation)
                 .UsingEntity<Dictionary<string, object>>(
                     "HospitalUser",
                     r => r.HasOne<User>().WithMany()
@@ -80,17 +81,18 @@ public partial class BloodDonationAppDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Birthday).HasColumnType("date");
             entity.Property(e => e.Email).HasMaxLength(50);
             entity.Property(e => e.LastName).HasMaxLength(50);
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.Password).HasMaxLength(50);
+            entity.Property(e => e.Type)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.Username).HasMaxLength(50);
 
             entity.HasOne(d => d.Blood).WithMany(p => p.Users)
                 .HasForeignKey(d => d.BloodId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Users_Bloods");
         });
 

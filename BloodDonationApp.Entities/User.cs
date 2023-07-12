@@ -7,9 +7,9 @@ public partial class User
 {
     public int Id { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; }
 
-    public string LastName { get; set; } = null!;
+    public string? LastName { get; set; }
 
     public string Username { get; set; } = null!;
 
@@ -19,11 +19,13 @@ public partial class User
 
     public DateTime? Birthday { get; set; }
 
-    public int BloodId { get; set; }
+    public int? BloodId { get; set; }
 
-    public bool IsAdmin { get; set; }
+    public string Type { get; set; } = null!;
 
-    public virtual Blood Blood { get; set; } = null!;
+    public virtual Blood? Blood { get; set; }
 
     public virtual ICollection<Hospital> Hospitals { get; set; } = new List<Hospital>();
+
+    public virtual ICollection<Hospital> HospitalsNavigation { get; set; } = new List<Hospital>();
 }

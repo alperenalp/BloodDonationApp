@@ -5,6 +5,8 @@ using System.Security.Claims;
 using BloodDonationApp.Business.DTOs.Requests;
 using BloodDonationApp.Business.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace BloodDonationApp.WebApp.Controllers
 {
@@ -19,8 +21,26 @@ namespace BloodDonationApp.WebApp.Controllers
             _bloodService = bloodService;
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
+            return View();
+        }
+
+        public async Task<IActionResult> Register()
+        {
+            ViewBag.Bloods = await getBloodTypesForSelecListAsync();
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(CreateNewUserRequest request)
+        {
+            if (ModelState.IsValid)
+            {
+                await _userService.CreateUserAsync(request);
+                return Redirect(nameof(Login));
+            }
             return View();
         }
 
@@ -42,8 +62,7 @@ namespace BloodDonationApp.WebApp.Controllers
                     {
                         new Claim(ClaimTypes.PrimarySid, user.Id.ToString()),
                         new Claim(ClaimTypes.Name, user.Name),
-                        new Claim(ClaimTypes.Email, user.Email),
-                        new Claim(ClaimTypes.Role, user.IsAdmin.ToString()),
+                        new Claim(ClaimTypes.Role, user.Type),
                     };
                     ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     ClaimsPrincipal principal = new ClaimsPrincipal(identity);
@@ -56,23 +75,6 @@ namespace BloodDonationApp.WebApp.Controllers
                     return Redirect("/");
                 }
                 ModelState.AddModelError("", "Kullanıcı adı veya şifre yanlış");
-            }
-            return View();
-        }
-
-        public async Task<IActionResult> Register()
-        {
-            ViewBag.Bloods = await getBloodTypesForSelecListAsync();
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Register(CreateNewUserRequest request)
-        {
-            if (ModelState.IsValid)
-            {
-                await _userService.CreateUserAsync(request);
-                return Redirect(nameof(Login));
             }
             return View();
         }

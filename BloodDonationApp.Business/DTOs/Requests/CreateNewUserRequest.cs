@@ -11,10 +11,10 @@ namespace BloodDonationApp.Business.DTOs.Requests
     {
         [Required(ErrorMessage = "Lütfen isminizi giriniz.")]
         [Display(Name = "İsim")]
-        public string Name { get; set; } = null!;
+        public string? Name { get; set; } = null!;
         [Required(ErrorMessage = "Lütfen soyisminizi giriniz.")]
         [Display(Name = "Soyisim")]
-        public string LastName { get; set; } = null!;
+        public string? LastName { get; set; } = null!;
         [Required(ErrorMessage = "Lütfen kullanıcı adınızı giriniz.")]
         [MinLength(3, ErrorMessage = "En az 3 karakter girmelisiniz.")]
         [Display(Name = "Kullanıcı Adı")]
@@ -33,6 +33,8 @@ namespace BloodDonationApp.Business.DTOs.Requests
 
         [Display(Name = "Kan Grubu")]
         [Required(ErrorMessage = "Lütfen Kan grubunuzu seçiniz.")]
-        public int BloodId { get; set; }
+        public int? BloodId { get; set; }
+
+        public string Type { get; set; }
     }
 }

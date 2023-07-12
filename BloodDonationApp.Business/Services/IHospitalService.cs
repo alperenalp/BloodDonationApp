@@ -11,6 +11,6 @@ namespace BloodDonationApp.Business.Services
     public interface IHospitalService
     {
         Task CreateHospitalAsync(CreateNewHospitalRequest request);
-        Task<HospitalValidateResponse> ValidateHospitalAsync(ValidateHospitalLoginRequest request);
+        Task<IEnumerable<HospitalDisplayResponse>> GetHospitalListAsync();
     }
 }

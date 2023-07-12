@@ -10,7 +10,7 @@ namespace BloodDonationApp.Business.Services
 {
     public interface IUserService
     {
-        Task CreateUserAsync(CreateNewUserRequest request);
+        Task<int> CreateUserAsync(CreateNewUserRequest request);
         Task<UserValidateResponse> ValidateUserAsync(ValidateUserLoginRequest request);
     }
 }

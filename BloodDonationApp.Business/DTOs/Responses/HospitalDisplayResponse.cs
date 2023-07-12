@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BloodDonationApp.Business.DTOs.Responses
 {
-    public class HospitalValidateResponse
+    public class HospitalDisplayResponse
     {
         public int Id { get; set; }
 
@@ -16,8 +16,6 @@ namespace BloodDonationApp.Business.DTOs.Responses
 
         public string? Phone { get; set; }
 
-        public string Username { get; set; } = null!;
-
-        public string Password { get; set; } = null!;
+        public int UserId { get; set; }
     }
 }

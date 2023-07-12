@@ -1,59 +1,27 @@
 ﻿using BloodDonationApp.Business.DTOs.Requests;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using BloodDonationApp.Business.Services;
+using Microsoft.AspNetCore.Authorization;
+using BloodDonationApp.WebApp.Models;
 
 namespace BloodDonationApp.WebApp.Controllers
 {
     public class HospitalsController : Controller
     {
         private readonly IHospitalService _hospitalService;
+        private readonly IUserService _userService;
 
-        public HospitalsController(IHospitalService hospitalService)
+        public HospitalsController(IHospitalService hospitalService, IUserService userService)
         {
             _hospitalService = hospitalService;
+            _userService = userService;
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
-            return View();
-        }
-
-        public async Task<IActionResult> Login(string? returnUrl)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> Login(ValidateHospitalLoginRequest request, string? returnUrl)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _hospitalService.ValidateHospitalAsync(request);
-                if (user != null)
-                {
-                    Claim[] claims = new Claim[]
-                    {
-                        new Claim(ClaimTypes.PrimarySid, user.Id.ToString()),
-                        new Claim(ClaimTypes.Name, user.Name),
-                    };
-                    ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    ClaimsPrincipal principal = new ClaimsPrincipal(identity);
-                    await HttpContext.SignInAsync(principal);
-
-                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-                    {
-                        return Redirect(returnUrl);
-                    }
-                    return Redirect("/");
-                }
-                ModelState.AddModelError("", "Kullanıcı adı veya şifre yanlış");
-            }
-            return View();
+            var hospitals = await _hospitalService.GetHospitalListAsync();
+            return View(hospitals);
         }
 
         public async Task<IActionResult> Register()
@@ -62,20 +30,39 @@ namespace BloodDonationApp.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(CreateNewHospitalRequest request)
+        public async Task<IActionResult> Register(UserHospitalVM request)
         {
             if (ModelState.IsValid)
             {
-                await _hospitalService.CreateHospitalAsync(request);
-                return Redirect(nameof(Login));
+                var userRequest = getCreateNewUserRequest(request);
+                var userId = await _userService.CreateUserAsync(userRequest);
+                var hospitalRequest = getNewHospitalRequest(request, userId);
+                await _hospitalService.CreateHospitalAsync(hospitalRequest);
+                return RedirectToAction("Login", "Users");
             }
             return View();
         }
 
-        public async Task<IActionResult> Logout()
+        private CreateNewHospitalRequest getNewHospitalRequest(UserHospitalVM request, int userId)
         {
-            await HttpContext.SignOutAsync();
-            return Redirect("/");
+            return new CreateNewHospitalRequest
+            {
+                UserId = userId,
+                Address = request.Address,
+                Name = request.Name,
+                Phone = request.Phone,
+            };
+        }
+
+        private CreateNewUserRequest getCreateNewUserRequest(UserHospitalVM request)
+        {
+            return new CreateNewUserRequest 
+            { 
+                Name = request.Name,
+                Username = request.Username, 
+                Password = request.Password, 
+                Type = "Hospital" 
+            };
         }
     }
 }
