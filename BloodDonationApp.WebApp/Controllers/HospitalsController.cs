@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BloodDonationApp.WebApp.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class HospitalsController : Controller
     {
         private readonly IHospitalService _hospitalService;
@@ -20,7 +21,6 @@ namespace BloodDonationApp.WebApp.Controllers
             _userService = userService;
         }
 
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var hospitals = await _hospitalService.GetHospitalListAsync();
@@ -33,32 +33,40 @@ namespace BloodDonationApp.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(UserHospitalVM request)
+        public async Task<IActionResult> Create(CreateNewHospitalRequest request)
         {
             if (ModelState.IsValid)
             {
-                var userRequest = getCreateNewUserRequest(request);
-                var userId = await _userService.CreateUserAsync(userRequest);
-                var hospitalRequest = getNewHospitalRequest(request, userId);
-                await _hospitalService.CreateHospitalAsync(hospitalRequest);
+                await _hospitalService.CreateHospitalAsync(request);
                 return Redirect(nameof(Index));
             }
             return View();
         }
 
+        public async Task<IActionResult> Detail(int id)
+        {
+            var hospital = _hospitalService.GetHospitalByIdAsync(id);
+            var hospitalUsers = _userService.GetUserListAsync();
+            return View();
+        }
+
         public async Task<IActionResult> Edit(int id)
         {
-
             ViewBag.Users = await getHospitalUsersSelectListAsync();
             var hospital = await _hospitalService.GetHospitalForUpdateAsync(id);
             return View(hospital);
         }
 
-        private async Task<IEnumerable<SelectListItem>> getHospitalUsersSelectListAsync()
+        private async Task<IEnumerable<UserDisplayResponse>> getHospitalUsersAsync()
         {
             var users = await _userService.GetUserListAsync();
-            return users.Where(x => x.Type == "Hospital")
-                .Select(x => new SelectListItem { Text = x.Username, Value = x.Id.ToString() });
+            return users.Where(x => x.Type == "Hospital");
+        }
+
+        private async Task<IEnumerable<SelectListItem>> getHospitalUsersSelectListAsync()
+        {
+            var users = await getHospitalUsersAsync();
+            return users.Select(x => new SelectListItem { Text = x.Username, Value = x.Id.ToString() });
         }
 
         [HttpPost]
@@ -87,46 +95,6 @@ namespace BloodDonationApp.WebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return NotFound();
-        }
-
-        public async Task<IActionResult> Register()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Register(UserHospitalVM request)
-        {
-            if (ModelState.IsValid)
-            {
-                var userRequest = getCreateNewUserRequest(request);
-                var userId = await _userService.CreateUserAsync(userRequest);
-                var hospitalRequest = getNewHospitalRequest(request, userId);
-                await _hospitalService.CreateHospitalAsync(hospitalRequest);
-                return RedirectToAction("Login", "Users");
-            }
-            return View();
-        }
-
-        private CreateNewHospitalRequest getNewHospitalRequest(UserHospitalVM request, int userId)
-        {
-            return new CreateNewHospitalRequest
-            {
-                UserId = userId,
-                Address = request.Address,
-                Name = request.Name,
-                Phone = request.Phone,
-            };
-        }
-
-        private CreateNewUserRequest getCreateNewUserRequest(UserHospitalVM request)
-        {
-            return new CreateNewUserRequest
-            {
-                Username = request.Username,
-                Password = request.Password,
-                Type = "Hospital"
-            };
         }
     }
 }

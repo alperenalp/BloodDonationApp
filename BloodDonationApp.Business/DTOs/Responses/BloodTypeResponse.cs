@@ -9,6 +9,7 @@ namespace BloodDonationApp.Business.DTOs.Responses
     public class BloodTypeResponse
     {
         public int Id { get; set; }
-        public string Type { get; set; }
+
+        public string Type { get; set; } = null!;
     }
 }

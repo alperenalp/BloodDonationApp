@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BloodDonationApp.Business.DTOs.Responses
+﻿namespace BloodDonationApp.Business.DTOs.Responses
 {
     public class UserDisplayResponse
     {
@@ -25,5 +19,7 @@ namespace BloodDonationApp.Business.DTOs.Responses
         public int? BloodId { get; set; }
 
         public string Type { get; set; } = null!;
+
+        public int? HospitalId { get; set; }
     }
 }

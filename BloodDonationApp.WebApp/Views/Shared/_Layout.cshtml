@@ -1,71 +1,200 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BloodDonationApp.WebApp</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/BloodDonationApp.WebApp.styles.css" asp-append-version="true" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Donation Dashboard </title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4-theme/plugins/fontawesome-free/css/all.min.css">
+    <!-- IonIcons -->
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4-theme/dist/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BloodDonationApp.WebApp</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-flex d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav">
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="/" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="/Home/Privacy" class="nav-link">Privacy</a>
+                </li>
+            </ul>
+            <!-- SEARCH FORM -->
+            <form class="form-inline ml-3">
+                <div class="input-group input-group-sm">
+                    <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-navbar" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <!-- Right navbar links -->
+            <ul class="nav nav-pills nav-sidebar flex-column ml-auto" data-widget="treeview" role="menu" data-accordion="false">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a href="/Users/Logout" class="nav-link">
+                            <i class="nav-icon fas fa-lock"></i>
+                            <p>
+                                Logout
+                            </p>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a href="/Users/Login" class="nav-link">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>
+                                Login
+                            </p>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="/" class="brand-link">
+                @*<img src="~/AdminLTE-3.0.4-theme/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                style="opacity: .8">*@
+                <i class="nav-icon fas fa-heart"></i>
+                <span class="brand-text font-weight-light">Blood Donation Bank</span>
+            </a>
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         @if (User.Identity.IsAuthenticated)
                         {
                             @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value == "Admin")
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Hospitals" asp-action="Index">Yönetim Paneli</a>
+                                    <a href="/Hospitals/Create" class="nav-link">
+                                        <i class="nav-icon fas fa-notes-medical"></i>
+                                        <p>
+                                            Hastane Ekle
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/Hospitals/Index" class="nav-link">
+                                        <i class="nav-icon fas fa-hospital"></i>
+                                        <p>
+                                            Hastane Listesi
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-user-plus"></i>
+                                        <p>
+                                            Hastane Kullanıcısı Ekle
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-users"></i>
+                                        <p>
+                                            Hastane Kullanıcıları
+                                        </p>
+                                    </a>
                                 </li>
                             }
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Logout">(@User.Identity.Name)Çıkış Yap</a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Login">Kullanıcı Girişi</a>
-                            </li>
-                        }
 
+                            if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value == "Hospital")
+                            {
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-notes-medical"></i>
+                                        <p>
+                                            Kan İhtiyacı Ekle
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-hospital"></i>
+                                        <p>
+                                            Kan İhtiyaç Listesi
+                                        </p>
+                                    </a>
+                                </li>
+                            }
+
+                            if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value == "User")
+                            {
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-hospital"></i>
+                                        <p>
+                                            Hastaneler
+                                        </p>
+                                    </a>
+                                </li>
+                            }
+                        }
                     </ul>
-
-                </div>
+                </nav>
+                <!-- /.sidebar-menu -->
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - BloodDonationApp.WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Main content -->
+            <div class="content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /.content -->
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+        <!-- /.content-wrapper -->
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2023 <a href="#">Alperen</a>.</strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 1.0.0
+            </div>
+        </footer>
+    </div>
+    <!-- ./wrapper -->
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    <script src="~/AdminLTE-3.0.4-theme/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="~/AdminLTE-3.0.4-theme/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE -->
+    <script src="~/AdminLTE-3.0.4-theme/dist/js/adminlte.js"></script>
+    <!-- OPTIONAL SCRIPTS -->
+    <script src="~/AdminLTE-3.0.4-theme/plugins/chart.js/Chart.min.js"></script>
+    <script src="~/AdminLTE-3.0.4-theme/dist/js/demo.js"></script>
+    <script src="~/AdminLTE-3.0.4-theme/dist/js/pages/dashboard3.js"></script>
 </body>
 </html>

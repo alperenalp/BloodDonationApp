@@ -22,13 +22,5 @@ namespace BloodDonationApp.Business.DTOs.Requests
         [MaxLength(15, ErrorMessage = "Lütfen 15 karakterden fazla giriş yapmayınız.")]
         [Display(Name = "Telefon")]
         public string? Phone { get; set; }
-
-        [Display(Name = "Hastane Seçiniz")]
-        public int UserId { get; set; }
-
-
-        
-
-        
     }
 }

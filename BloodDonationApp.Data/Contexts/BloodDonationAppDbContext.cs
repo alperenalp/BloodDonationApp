@@ -35,33 +35,12 @@ public partial class BloodDonationAppDbContext : DbContext
 
         modelBuilder.Entity<Hospital>(entity =>
         {
-            entity.Property(e => e.Address).HasMaxLength(50);
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Address).HasMaxLength(250);
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.Phone)
                 .HasMaxLength(15)
                 .IsUnicode(false);
-
-            entity.HasOne(d => d.User).WithMany(p => p.Hospitals)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Hospitals_Users");
-
-            entity.HasMany(d => d.Users).WithMany(p => p.HospitalsNavigation)
-                .UsingEntity<Dictionary<string, object>>(
-                    "HospitalUser",
-                    r => r.HasOne<User>().WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_HospitalUsers_Users"),
-                    l => l.HasOne<Hospital>().WithMany()
-                        .HasForeignKey("HospitalId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_HospitalUsers_Hospitals"),
-                    j =>
-                    {
-                        j.HasKey("HospitalId", "UserId");
-                        j.ToTable("HospitalUsers");
-                    });
         });
 
         modelBuilder.Entity<HospitalBlood>(entity =>
@@ -87,13 +66,17 @@ public partial class BloodDonationAppDbContext : DbContext
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.Password).HasMaxLength(50);
             entity.Property(e => e.Type)
-                .HasMaxLength(50)
+                .HasMaxLength(25)
                 .IsUnicode(false);
             entity.Property(e => e.Username).HasMaxLength(50);
 
             entity.HasOne(d => d.Blood).WithMany(p => p.Users)
                 .HasForeignKey(d => d.BloodId)
                 .HasConstraintName("FK_Users_Bloods");
+
+            entity.HasOne(d => d.Hospital).WithMany(p => p.Users)
+                .HasForeignKey(d => d.HospitalId)
+                .HasConstraintName("FK_Users_Hospitals");
         });
 
         OnModelCreatingPartial(modelBuilder);

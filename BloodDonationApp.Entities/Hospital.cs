@@ -13,11 +13,7 @@ public partial class Hospital
 
     public string? Phone { get; set; }
 
-    public int UserId { get; set; }
-
     public virtual ICollection<HospitalBlood> HospitalBloods { get; set; } = new List<HospitalBlood>();
-
-    public virtual User User { get; set; } = null!;
 
     public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

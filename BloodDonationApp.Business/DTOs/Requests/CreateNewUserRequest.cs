@@ -36,5 +36,7 @@ namespace BloodDonationApp.Business.DTOs.Requests
         public int? BloodId { get; set; }
 
         public string? Type { get; set; }
+
+        public int? HospitalId { get; set; }
     }
 }

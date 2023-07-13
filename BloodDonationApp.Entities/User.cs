@@ -23,9 +23,9 @@ public partial class User
 
     public string Type { get; set; } = null!;
 
+    public int? HospitalId { get; set; }
+
     public virtual Blood? Blood { get; set; }
 
-    public virtual ICollection<Hospital> Hospitals { get; set; } = new List<Hospital>();
-
-    public virtual ICollection<Hospital> HospitalsNavigation { get; set; } = new List<Hospital>();
+    public virtual Hospital? Hospital { get; set; }
 }

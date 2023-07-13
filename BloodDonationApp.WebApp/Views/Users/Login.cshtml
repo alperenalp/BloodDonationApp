@@ -2,14 +2,11 @@
 
 @{
     ViewData["Title"] = "Login";
-    Layout = "~/Views/Shared/_BasicLayout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="d-flex align-items-center justify-content-center" style="height:600px;">
-
-    <div class="col-md-8 p-5 bg-light">
-        <h4 class="text-center">Kullanıcı Giriş Sayfası</h4>
-
+<div class="row h-100 d-flex align-items-center justify-content-center p-5">
+    <div class="col-md-6 p-5 bg-light">
         <form asp-action="Login" asp-route-returnUrl="@ViewBag.ReturnUrl">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group form-outline mb-4">
@@ -27,15 +24,20 @@
             </div>
         </form>
         <div class="text-center mt-5">
-            <p>Üye değil misin? <a asp-action="Register">Bağışçı ol</a> Ya da <a asp-controller="Hospitals" asp-action="Register">Hastane üyeliği oluştur</a></p>
+            <p>Üye değil misin? <a asp-action="Register">Kaydol</a></p>
         </div>
-        <div class ="mt-5">
-            <a asp-controller="Home" asp-action="Index">Anasayfaya dön.</a>
+        <div class="card sidebar-dark-primary mt-5" style="margin-top:5px; color:darkgray;">
+            <div class="card-body text-center">
+                <p class="card-text">
+                <p>Sample Roles:</p>
+                <ul class="list-unstyled">
+                    <li>Username: <strong>admin</strong> Password: <strong>123</strong> - System Admin Profile</li>
+                    <li>Username: <strong>hospital</strong> Password: <strong>123</strong> - Hospital Profile</li>
+                    <li>Username: <strong>user</strong> Password: <strong>123</strong> - User Profile</li>
+                </ul>
+                </p>
+            </div>
         </div>
     </div>
 
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
