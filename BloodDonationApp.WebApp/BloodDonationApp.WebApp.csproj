@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\AdminLTE-3.0.4-theme\.github\ISSUE_TEMPLATE\bug-report-for-adminlte-v2-4-x.md" />
-    <None Include="wwwroot\AdminLTE-3.0.4-theme\.github\ISSUE_TEMPLATE\bug-report-for-adminlte-v3-x.md" />
-    <None Include="wwwroot\AdminLTE-3.0.4-theme\.github\ISSUE_TEMPLATE\feature-request-for-adminlte-v3-x.md" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.8">
       <PrivateAssets>all</PrivateAssets>
