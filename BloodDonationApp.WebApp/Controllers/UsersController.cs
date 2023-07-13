@@ -38,6 +38,7 @@ namespace BloodDonationApp.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                request.Type = "Donor";
                 await _userService.CreateUserAsync(request);
                 return Redirect(nameof(Login));
             }
@@ -61,7 +62,7 @@ namespace BloodDonationApp.WebApp.Controllers
                     Claim[] claims = new Claim[]
                     {
                         new Claim(ClaimTypes.PrimarySid, user.Id.ToString()),
-                        new Claim(ClaimTypes.Name, user.Name),
+                        new Claim(ClaimTypes.Name, user.Username),
                         new Claim(ClaimTypes.Role, user.Type),
                     };
                     ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

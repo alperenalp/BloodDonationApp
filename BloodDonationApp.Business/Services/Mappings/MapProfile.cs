@@ -18,10 +18,12 @@ namespace BloodDonationApp.Business.Services.Mappings
             CreateMap<User, UserValidateResponse>().ReverseMap();
             CreateMap<User, ValidateUserLoginRequest>().ReverseMap();
             CreateMap<User, CreateNewUserRequest>().ReverseMap();
+            CreateMap<User, UserDisplayResponse>().ReverseMap();
 
             //Hospitals
             CreateMap<Hospital, CreateNewHospitalRequest>().ReverseMap();
             CreateMap<Hospital, HospitalDisplayResponse>().ReverseMap();
+            CreateMap<Hospital, UpdateHospitalRequest>().ReverseMap();
 
             //Bloods
             CreateMap<Blood, BloodTypeResponse>().ReverseMap();

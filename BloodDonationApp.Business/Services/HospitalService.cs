@@ -28,10 +28,38 @@ namespace BloodDonationApp.Business.Services
             await _hospitalRepository.CreateAsync(hospital);
         }
 
+        public async Task DeleteHospitalAsync(int id)
+        {
+            await _hospitalRepository.DeleteAsync(id);
+        }
+
+        public async Task<HospitalDisplayResponse> GetHospitalByIdAsync(int id)
+        {
+            var hospital = await _hospitalRepository.GetByIdAsync(id);
+            return _mapper.Map<HospitalDisplayResponse>(hospital);
+        }
+
+        public async Task<UpdateHospitalRequest> GetHospitalForUpdateAsync(int id)
+        {
+            var hospital = await _hospitalRepository.GetByIdAsync(id);
+            return _mapper.Map<UpdateHospitalRequest>(hospital);
+        }
+
         public async Task<IEnumerable<HospitalDisplayResponse>> GetHospitalListAsync()
         {
             var hospitals = await _hospitalRepository.GetAllAsync();
             return _mapper.Map<IEnumerable<HospitalDisplayResponse>>(hospitals);
+        }
+
+        public async Task<bool> IsHospitalExistsAsync(int id)
+        {
+            return await _hospitalRepository.IsExistsAsync(id);
+        }
+
+        public async Task UpdateHospitalAsync(UpdateHospitalRequest request)
+        {
+            var hospital = _mapper.Map<Hospital>(request);
+            await _hospitalRepository.UpdateAsync(hospital);
         }
     }
 }

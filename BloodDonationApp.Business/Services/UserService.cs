@@ -34,5 +34,11 @@ namespace BloodDonationApp.Business.Services
             var user = _mapper.Map<User>(request);
             return await _userRepository.CreateAsync(user);
         }
+
+        public async Task<IEnumerable<UserDisplayResponse>> GetUserListAsync()
+        {
+            var users = await _userRepository.GetAllAsync();
+            return _mapper.Map<IEnumerable<UserDisplayResponse>>(users);    
+        }
     }
 }

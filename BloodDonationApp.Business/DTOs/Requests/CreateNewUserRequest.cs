@@ -35,6 +35,6 @@ namespace BloodDonationApp.Business.DTOs.Requests
         [Required(ErrorMessage = "Lütfen Kan grubunuzu seçiniz.")]
         public int? BloodId { get; set; }
 
-        public string Type { get; set; }
+        public string? Type { get; set; }
     }
 }
