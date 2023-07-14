@@ -51,6 +51,12 @@ namespace BloodDonationApp.Business.Services
             return _mapper.Map<IEnumerable<HospitalDisplayResponse>>(hospitals);
         }
 
+        public async Task<string> GetHospitalNameByIdAsync(int id)
+        {
+            var hospital = await _hospitalRepository.GetByIdAsync(id);
+            return hospital.Name;
+        }
+
         public async Task<bool> IsHospitalExistsAsync(int id)
         {
             return await _hospitalRepository.IsExistsAsync(id);

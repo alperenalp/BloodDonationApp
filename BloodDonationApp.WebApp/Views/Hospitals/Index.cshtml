@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row h-100 d-flex align-items-center justify-content-center p-5">
-    <div class="col-md-12 p-5 bg-light">
-        <h4 class="text-center"><b>Hastaneler</b></h4>
-        <table class="table">
+<div class="row">
+    <div class="col-md-12 p-5 ">
+        <h4 class="text-center mb-5"><b>Hastaneler</b></h4>
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>
@@ -43,9 +43,10 @@
                             @Html.DisplayFor(modelItem => item.Phone)
                         </td>
                         <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id}) |
+                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>
+@*                            @Html.ActionLink("Edit", "Edit", new { id = item.Id}) |
                             @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
                         </td>
                     </tr>
                 }

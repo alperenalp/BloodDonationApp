@@ -57,16 +57,10 @@ namespace BloodDonationApp.WebApp.Controllers
             return View(hospital);
         }
 
-        private async Task<IEnumerable<UserDisplayResponse>> getHospitalUsersAsync()
-        {
-            var users = await _userService.GetUserListAsync();
-            return users.Where(x => x.Type == "Hospital");
-        }
-
         private async Task<IEnumerable<SelectListItem>> getHospitalUsersSelectListAsync()
         {
-            var users = await getHospitalUsersAsync();
-            return users.Select(x => new SelectListItem { Text = x.Username, Value = x.Id.ToString() });
+            var hospitalUsers = await _userService.GetHospitalUserListAsync();
+            return hospitalUsers.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
         }
 
         [HttpPost]

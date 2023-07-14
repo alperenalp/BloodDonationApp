@@ -103,7 +103,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="/Users/AddHospitalUserToUsers" class="nav-link">
                                         <i class="nav-icon fas fa-user-plus"></i>
                                         <p>
                                             Hastane Kullanıcısı Ekle
@@ -111,7 +111,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="/Users/GetHospitalUsers" class="nav-link">
                                         <i class="nav-icon fas fa-users"></i>
                                         <p>
                                             Hastane Kullanıcıları
@@ -187,10 +187,11 @@
     <!-- ./wrapper -->
     <!-- REQUIRED SCRIPTS -->
     <!-- jQuery -->
-    <script src="~/AdminLTE-3.0.4-theme/plugins/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
-    <script src="~/AdminLTE-3.0.4-theme/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE -->
     <script src="~/AdminLTE-3.0.4-theme/dist/js/adminlte.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

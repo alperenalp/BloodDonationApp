@@ -15,6 +15,7 @@ namespace BloodDonationApp.Business.Services
         Task<HospitalDisplayResponse> GetHospitalByIdAsync(int id);
         Task<UpdateHospitalRequest> GetHospitalForUpdateAsync(int id);
         Task<IEnumerable<HospitalDisplayResponse>> GetHospitalListAsync();
+        Task<string> GetHospitalNameByIdAsync(int id);
         Task<bool> IsHospitalExistsAsync(int id);
         Task UpdateHospitalAsync(UpdateHospitalRequest request);
     }

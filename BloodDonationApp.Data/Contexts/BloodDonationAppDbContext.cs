@@ -35,7 +35,6 @@ public partial class BloodDonationAppDbContext : DbContext
 
         modelBuilder.Entity<Hospital>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Address).HasMaxLength(250);
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.Phone)
