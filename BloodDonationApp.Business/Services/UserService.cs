@@ -55,5 +55,11 @@ namespace BloodDonationApp.Business.Services
             hospitalUser.Type = "Hospital";
             return await _userRepository.CreateAsync(hospitalUser);
         }
+
+        public async Task<UserDisplayResponse> GetUserByIdAsync(int id)
+        {
+            var user = await _userRepository.GetByIdAsync(id);
+            return _mapper.Map<UserDisplayResponse>(user);
+        }
     }
 }

@@ -52,5 +52,11 @@ namespace BloodDonationApp.Data.Repositories
             _context.Hospitals.Update(hospital);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<Hospital?> GetHospitalByIdWithBloodsAsync(int id)
+        {
+            return await _context.Hospitals.Include(x=>x.HospitalBloods).ThenInclude(x=>x.Blood).SingleOrDefaultAsync(x => x.Id == id);
+
+        }
     }
 }

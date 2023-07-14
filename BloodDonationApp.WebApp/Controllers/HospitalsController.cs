@@ -43,13 +43,6 @@ namespace BloodDonationApp.WebApp.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Detail(int id)
-        {
-            var hospital = _hospitalService.GetHospitalByIdAsync(id);
-            var hospitalUsers = _userService.GetUserListAsync();
-            return View();
-        }
-
         public async Task<IActionResult> Edit(int id)
         {
             ViewBag.Users = await getHospitalUsersSelectListAsync();

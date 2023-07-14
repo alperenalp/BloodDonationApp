@@ -128,7 +128,18 @@ namespace BloodDonationApp.WebApp.Controllers
                     {
                         return Redirect(returnUrl);
                     }
-                    return Redirect("/");
+
+                    if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value == "Admin")
+                    {
+                        return RedirectToAction("Index", "Hospitals"); // admin profili
+                    }
+
+                    if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value == "Hospital")
+                    {
+                        return RedirectToAction("Index", "HospitalBloods"); // hastane kullanıcısı profili
+                    }
+
+                    return Redirect("/");  // user profili
                 }
                 ModelState.AddModelError("", "Kullanıcı adı veya şifre yanlış");
             }

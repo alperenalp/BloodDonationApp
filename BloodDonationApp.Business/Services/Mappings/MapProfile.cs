@@ -29,6 +29,10 @@ namespace BloodDonationApp.Business.Services.Mappings
 
             //Bloods
             CreateMap<Blood, BloodTypeResponse>().ReverseMap();
+            CreateMap<Blood, CreateNewHospitalBloodRequest>().ReverseMap();
+
+            //HospitalBloods
+            CreateMap<HospitalBlood, HospitalBloodsDisplayResponse>().ReverseMap();
         }
     }
 }

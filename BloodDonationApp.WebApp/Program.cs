@@ -16,6 +16,7 @@ builder.Services.AddScoped<IHospitalService, HospitalService>();
 builder.Services.AddScoped<IHospitalRepository, EFHospitalRepository>();
 builder.Services.AddScoped<IBloodService, BloodService>();
 builder.Services.AddScoped<IBloodRepository, EFBloodRepository>();
+builder.Services.AddScoped<IHospitalBloodService, HospitalBloodService>();
 
 builder.Services.AddAutoMapper(typeof(MapProfile));
 

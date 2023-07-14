@@ -44,7 +44,7 @@ public partial class BloodDonationAppDbContext : DbContext
 
         modelBuilder.Entity<HospitalBlood>(entity =>
         {
-            entity.HasKey(e => new { e.HospitalId, e.BloodId });
+            entity.HasKey(e => new { e.BloodId, e.HospitalId }).HasName("PK_HospitalBloods_1");
 
             entity.HasOne(d => d.Blood).WithMany(p => p.HospitalBloods)
                 .HasForeignKey(d => d.BloodId)
@@ -54,7 +54,7 @@ public partial class BloodDonationAppDbContext : DbContext
             entity.HasOne(d => d.Hospital).WithMany(p => p.HospitalBloods)
                 .HasForeignKey(d => d.HospitalId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_HospitalBloods_Hospitals");
+                .HasConstraintName("FK_HospitalBloods_Hospitals1");
         });
 
         modelBuilder.Entity<User>(entity =>

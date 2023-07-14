@@ -13,6 +13,7 @@ namespace BloodDonationApp.Business.Services
         Task<int> CreateHospitalUserAsync(CreateNewHospitalUserRequest request);
         Task<int> CreateUserAsync(CreateNewUserRequest request);
         Task<IEnumerable<HospitalUserDisplayResponse>> GetHospitalUserListAsync();
+        Task<UserDisplayResponse> GetUserByIdAsync(int id);
         Task<IEnumerable<UserDisplayResponse>> GetUserListAsync();
         Task<UserValidateResponse> ValidateUserAsync(ValidateUserLoginRequest request);
     }

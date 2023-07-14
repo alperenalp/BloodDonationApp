@@ -6,11 +6,11 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Donation Dashboard </title>
     <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="~/AdminLTE-3.0.4-theme/plugins/fontawesome-free/css/all.min.css">
+    <link href="~/adminlte-3.0.4-theme/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" />
     <!-- IonIcons -->
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="~/AdminLTE-3.0.4-theme/dist/css/adminlte.min.css">
+    <link href="~/adminlte-3.0.4-theme/dist/css/adminlte.min.css" rel="stylesheet" />
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
@@ -26,12 +26,9 @@
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="/" class="nav-link">Home</a>
                 </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="/Home/Privacy" class="nav-link">Privacy</a>
-                </li>
             </ul>
             <!-- SEARCH FORM -->
-            <form class="form-inline ml-3">
+@*            <form class="form-inline ml-3">
                 <div class="input-group input-group-sm">
                     <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
                     <div class="input-group-append">
@@ -40,7 +37,7 @@
                         </button>
                     </div>
                 </div>
-            </form>
+            </form>*@
             <!-- Right navbar links -->
             <ul class="nav nav-pills nav-sidebar flex-column ml-auto" data-widget="treeview" role="menu" data-accordion="false">
                 @if (User.Identity.IsAuthenticated)
@@ -123,7 +120,7 @@
                             if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value == "Hospital")
                             {
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="/HospitalBloods/AddNeedForBlood/@User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid).Value" class="nav-link">
                                         <i class="nav-icon fas fa-notes-medical"></i>
                                         <p>
                                             Kan İhtiyacı Ekle
@@ -131,7 +128,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="/HospitalBloods/ListBloodNeeds/@User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid).Value" class="nav-link">
                                         <i class="nav-icon fas fa-hospital"></i>
                                         <p>
                                             Kan İhtiyaç Listesi

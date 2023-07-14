@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodDonationApp.Data", "BloodDonationApp.Data\BloodDonationApp.Data.csproj", "{B7EF41A4-EBD3-4F34-8B0D-405F5A14862A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodDonationApp.Data", "BloodDonationApp.Data\BloodDonationApp.Data.csproj", "{B7EF41A4-EBD3-4F34-8B0D-405F5A14862A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodDonationApp.Entities", "BloodDonationApp.Entities\BloodDonationApp.Entities.csproj", "{593CC954-ADEA-4F5C-B3EC-72940A50A62E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodDonationApp.Entities", "BloodDonationApp.Entities\BloodDonationApp.Entities.csproj", "{593CC954-ADEA-4F5C-B3EC-72940A50A62E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodDonationApp.WebApp", "BloodDonationApp.WebApp\BloodDonationApp.WebApp.csproj", "{160AA118-E2D5-4393-B886-008AFB3B9F56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodDonationApp.WebApp", "BloodDonationApp.WebApp\BloodDonationApp.WebApp.csproj", "{160AA118-E2D5-4393-B886-008AFB3B9F56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodDonationApp.Business", "BloodDonationApp.Business\BloodDonationApp.Business.csproj", "{49B23577-B55A-4BC1-A6C1-936DB18F6330}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodDonationApp.Business", "BloodDonationApp.Business\BloodDonationApp.Business.csproj", "{49B23577-B55A-4BC1-A6C1-936DB18F6330}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
