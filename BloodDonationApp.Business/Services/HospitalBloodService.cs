@@ -15,13 +15,15 @@ namespace BloodDonationApp.Business.Services
     {
         private readonly IHospitalRepository _hospitalRepository;
         private readonly IBloodRepository _bloodRepository;
+        private readonly IHospitalBloodRepository _hospitalBloodRepository;
         private readonly IMapper _mapper;
 
-        public HospitalBloodService(IBloodRepository bloodRepository, IHospitalRepository hospitalRepository, IMapper mapper)
+        public HospitalBloodService(IBloodRepository bloodRepository, IHospitalRepository hospitalRepository, IMapper mapper, IHospitalBloodRepository hospitalBloodRepository)
         {
             _bloodRepository = bloodRepository;
             _hospitalRepository = hospitalRepository;
             _mapper = mapper;
+            _hospitalBloodRepository = hospitalBloodRepository;
         }
 
         public async Task AddNeedForBloodAsync(CreateNewHospitalBloodRequest request, int hospitalId)
@@ -49,6 +51,23 @@ namespace BloodDonationApp.Business.Services
             var hospital = await _hospitalRepository.GetHospitalByIdWithBloodsAsync(hospitalId);
             var hospitalBloods = _mapper.Map<IEnumerable<HospitalBloodsDisplayResponse>>(hospital.HospitalBloods);
             return hospitalBloods;
+        }
+
+        public async Task<bool> IsExistsBloodInHospital(int bloodId, int hospitalId)
+        {
+            return await _hospitalBloodRepository.isExists(bloodId, hospitalId);
+        }
+
+        public async Task<UpdateHospitalBloodRequest> GetHospitalBloodForUpdateAsync(int hospitalId, int bloodId)
+        {
+            var hospitalBlood = await _hospitalBloodRepository.GetHospitalBloodAsync(hospitalId, bloodId);
+            return _mapper.Map<UpdateHospitalBloodRequest>(hospitalBlood);
+        }
+
+        public async Task UpdateHospitalBloodAsync(UpdateHospitalBloodRequest request)
+        {
+            var hospitalBlood = _mapper.Map<HospitalBlood>(request);
+            await _hospitalBloodRepository.UpdateHospitalBloodAsync(hospitalBlood);
         }
     }
 }

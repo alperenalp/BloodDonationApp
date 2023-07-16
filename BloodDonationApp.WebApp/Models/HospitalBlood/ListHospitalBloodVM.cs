@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BloodDonationApp.WebApp.Models.Hospital
+namespace BloodDonationApp.WebApp.Models.HospitalBlood
 {
     public class ListHospitalBloodVM
     {
+        public int HospitalId { get; set; }
+        public int BloodId { get; set; }
+
         [Display(Name = "Kan Grubu")]
         public string BloodType { get; set; }
         [Display(Name = "Kan İhtiyacı")]

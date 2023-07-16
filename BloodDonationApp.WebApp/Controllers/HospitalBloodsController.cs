@@ -1,9 +1,10 @@
 ﻿using BloodDonationApp.Business.DTOs.Requests;
 using BloodDonationApp.Business.DTOs.Responses;
 using BloodDonationApp.Business.Services;
-using BloodDonationApp.WebApp.Models.Hospital;
+using BloodDonationApp.WebApp.Models.HospitalBlood;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace BloodDonationApp.WebApp.Controllers
 {
@@ -47,13 +48,22 @@ namespace BloodDonationApp.WebApp.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userService.GetUserByIdAsync(id);
-                await _hospitalBloodService.AddNeedForBloodAsync(request, (int)user.HospitalId);
+                if (!await _hospitalBloodService.IsExistsBloodInHospital(request.BloodId, (int)user.HospitalId))
+                {
+                    await _hospitalBloodService.AddNeedForBloodAsync(request, (int)user.HospitalId);
+                    return View();
+                }
+                ModelState.AddModelError("", "Bu kan ihtiyacı zaten eklenmiş.");
             }
             return View();
         }
 
         public async Task<IActionResult> ListBloodNeeds(int id)
         {
+            if (id == 0)
+            {
+                id = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid).Value);
+            }
             var user = await _userService.GetUserByIdAsync(id);
             var hospitalBloods = await _hospitalBloodService.GetHospitalBloodListAsync((int)user.HospitalId);
             var hospitalBloodsVM = await getHospitalBloodsVMAsync(hospitalBloods);
@@ -67,6 +77,7 @@ namespace BloodDonationApp.WebApp.Controllers
             {
                 hospitalBloodsVM.Add(new ListHospitalBloodVM
                 {
+                    BloodId = item.BloodId,
                     BloodType = await _bloodService.GetBloodTypeByIdAsync(item.BloodId),
                     Quantity = item.Quantity,
                 });
@@ -79,6 +90,43 @@ namespace BloodDonationApp.WebApp.Controllers
             var user = await _userService.GetUserByIdAsync(id);
             var hospitals = await _hospitalBloodService.GetHospitalListByBloodIdAsync((int)user.BloodId);
             return View(hospitals);
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid).Value);
+            var user = await _userService.GetUserByIdAsync(userId);
+            var hospitalBlood = await _hospitalBloodService.GetHospitalBloodForUpdateAsync((int)user.HospitalId, id);
+            var editHospitalBloodVM = await getEditHospitalBloodVMAsync(id, hospitalBlood);
+            return View(editHospitalBloodVM);
+        }
+
+        private async Task<EditHospitalBloodVM> getEditHospitalBloodVMAsync(int bloodId, UpdateHospitalBloodRequest hospitalBlood)
+        {
+            return new EditHospitalBloodVM
+            {
+                BloodId = hospitalBlood.BloodId,
+                HospitalId = hospitalBlood.HospitalId,
+                BloodType = await _bloodService.GetBloodTypeByIdAsync(bloodId),
+                Quantity = hospitalBlood.Quantity,
+            };
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(UpdateHospitalBloodRequest request)
+        {
+            var isHospitalExists = await _hospitalBloodService.IsExistsBloodInHospital(request.BloodId, request.HospitalId);
+            if (isHospitalExists)
+            {
+                if (ModelState.IsValid)
+                {
+                    await _hospitalBloodService.UpdateHospitalBloodAsync(request);
+                    int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid).Value);
+                    return RedirectToAction(nameof(ListBloodNeeds));
+                }
+                return View();
+            }
+            return NotFound();
         }
     }
 }

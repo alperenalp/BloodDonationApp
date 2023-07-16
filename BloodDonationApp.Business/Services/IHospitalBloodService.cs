@@ -13,5 +13,8 @@ namespace BloodDonationApp.Business.Services
         Task AddNeedForBloodAsync(CreateNewHospitalBloodRequest request, int hospitalId);
         Task<IEnumerable<HospitalDisplayResponse>> GetHospitalListByBloodIdAsync(int bloodId);
         Task<IEnumerable<HospitalBloodsDisplayResponse>> GetHospitalBloodListAsync(int hospitalId);
+        Task<bool> IsExistsBloodInHospital(int bloodId, int hospitalId);
+        Task<UpdateHospitalBloodRequest> GetHospitalBloodForUpdateAsync(int hospitalId, int bloodId);
+        Task UpdateHospitalBloodAsync(UpdateHospitalBloodRequest request);
     }
 }

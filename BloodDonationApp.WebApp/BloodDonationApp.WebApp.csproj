@@ -19,4 +19,8 @@
     <ProjectReference Include="..\BloodDonationApp.Business\BloodDonationApp.Business.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Hospital\" />
+  </ItemGroup>
+
 </Project>
