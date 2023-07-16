@@ -10,5 +10,6 @@ namespace BloodDonationApp.Business.Services
     public interface IBloodService
     {
         Task<IEnumerable<BloodTypeResponse>> GetAllBloodsAsync();
+        Task<string> GetBloodTypeByIdAsync(int bloodId);
     }
 }

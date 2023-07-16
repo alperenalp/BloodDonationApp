@@ -7,12 +7,15 @@
 
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 p-5">
+        <h4 class="text-center mb-5"><b>Kan ihtiyacı ekle</b></h4>
         <form asp-action="AddNeedForBlood">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="BloodId" class="control-label"></label>
-                <input asp-for="BloodId" class="form-control" />
+                <select asp-for="BloodId" class="form-control" asp-items="ViewBag.Bloods">
+                    <option disabled selected>Lütfen kan grubu seçiniz</option>
+                </select>
                 <span asp-validation-for="BloodId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -28,5 +31,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

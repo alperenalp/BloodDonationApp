@@ -58,13 +58,13 @@ namespace BloodDonationApp.WebApp.Controllers
             return View(hospitalUsers);
         }
 
-        private async Task<IEnumerable<HospitalUserVM>> getHospitalUsersVM()
+        private async Task<IEnumerable<ListHospitalUserVM>> getHospitalUsersVM()
         {
             var hospitalUsers = await _userService.GetHospitalUserListAsync();
-            var response = new List<HospitalUserVM>();
+            var response = new List<ListHospitalUserVM>();
             foreach (var user in hospitalUsers)
             {
-                response.Add(new HospitalUserVM
+                response.Add(new ListHospitalUserVM
                 {
                     Id = user.Id,
                     Name = user.Name,
@@ -129,17 +129,7 @@ namespace BloodDonationApp.WebApp.Controllers
                         return Redirect(returnUrl);
                     }
 
-                    if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value == "Admin")
-                    {
-                        return RedirectToAction("Index", "Hospitals"); // admin profili
-                    }
-
-                    if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value == "Hospital")
-                    {
-                        return RedirectToAction("Index", "HospitalBloods"); // hastane kullanıcısı profili
-                    }
-
-                    return Redirect("/");  // user profili
+                    return Redirect("/"); 
                 }
                 ModelState.AddModelError("", "Kullanıcı adı veya şifre yanlış");
             }

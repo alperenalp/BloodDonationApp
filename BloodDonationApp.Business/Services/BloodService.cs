@@ -27,5 +27,11 @@ namespace BloodDonationApp.Business.Services
             var response = _mapper.Map<IEnumerable<BloodTypeResponse>>(bloods);
             return response;
         }
+
+        public async Task<string> GetBloodTypeByIdAsync(int bloodId)
+        {
+            var blood = await _bloodRepository.GetByIdAsync(bloodId);
+            return blood.Type;
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace BloodDonationApp.WebApp.Models.User
 {
-    public class HospitalUserVM
+    public class ListHospitalUserVM
     {
         public int Id { get; set; }
         [Display(Name = "İsim")]

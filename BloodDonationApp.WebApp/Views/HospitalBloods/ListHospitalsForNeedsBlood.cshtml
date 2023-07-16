@@ -1,21 +1,24 @@
-﻿@model IEnumerable<ListHospitalBloodVM>
+﻿@model IEnumerable<BloodDonationApp.Business.DTOs.Responses.HospitalDisplayResponse>
 
 @{
-    ViewData["Title"] = "ListBloodNeeds";
+    ViewData["Title"] = "ListHospitalsForNeedsBlood";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row">
     <div class="col-md-12 p-5">
-        <h4 class="text-center mb-5"><b>Kan İhtiyaç Listeniz</b></h4>
+        <h4 class="text-center mb-5"><b>Kan grubunuza ihtiyacı olan hastaneler</b></h4>
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.BloodType)
+                        @Html.DisplayNameFor(model => model.Name)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Quantity)
+                        @Html.DisplayNameFor(model => model.Address)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Phone)
                     </th>
                     @*<th></th>*@
                 </tr>
@@ -25,12 +28,15 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.BloodType)
+                            @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Quantity)
+                            @Html.DisplayFor(modelItem => item.Address)
                         </td>
-                        @*       <td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phone)
+                        </td>
+                        @*<td>
                     @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                     @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                     @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
@@ -39,6 +45,6 @@
                 }
             </tbody>
         </table>
+
     </div>
 </div>
-

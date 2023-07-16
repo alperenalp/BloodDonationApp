@@ -44,7 +44,7 @@ namespace BloodDonationApp.Data.Repositories
 
         public async Task<bool> IsExistsAsync(int id)
         {
-            return await _context.Hospitals.AnyAsync(x=> x.Id == id);   
+            return await _context.Hospitals.AnyAsync(x => x.Id == id);
         }
 
         public async Task UpdateAsync(Hospital hospital)
@@ -55,8 +55,16 @@ namespace BloodDonationApp.Data.Repositories
 
         public async Task<Hospital?> GetHospitalByIdWithBloodsAsync(int id)
         {
-            return await _context.Hospitals.Include(x=>x.HospitalBloods).ThenInclude(x=>x.Blood).SingleOrDefaultAsync(x => x.Id == id);
+            return await _context.Hospitals.Include(x => x.HospitalBloods)
+                                            .ThenInclude(x => x.Blood)
+                                            .SingleOrDefaultAsync(x => x.Id == id);
+        }
 
+        public async Task<IList<Hospital>> GetHospitalListByBloodIdAsync(int bloodId)
+        {
+            return await _context.HospitalBloods.Where(x => x.BloodId == bloodId)
+                                                .Select(y => y.Hospital)
+                                                .ToListAsync();
         }
     }
 }

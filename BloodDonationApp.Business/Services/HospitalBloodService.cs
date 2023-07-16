@@ -33,15 +33,22 @@ namespace BloodDonationApp.Business.Services
                 BloodId = request.BloodId,
                 HospitalId = hospital.Id,
                 Quantity = request.Quantity,
-            }); ;
+            });
 
             await _hospitalRepository.UpdateAsync(hospital);
         }
 
-        public async Task<IEnumerable<HospitalBloodsDisplayResponse>> GetHospitalNeedBloodListAsync(int hospitalId)
+        public async Task<IEnumerable<HospitalDisplayResponse>> GetHospitalListByBloodIdAsync(int bloodId)
+        {
+            var hospitals = await _hospitalRepository.GetHospitalListByBloodIdAsync(bloodId);
+            return _mapper.Map<IEnumerable<HospitalDisplayResponse>>(hospitals);
+        }
+
+        public async Task<IEnumerable<HospitalBloodsDisplayResponse>> GetHospitalBloodListAsync(int hospitalId)
         {
             var hospital = await _hospitalRepository.GetHospitalByIdWithBloodsAsync(hospitalId);
-            return _mapper.Map<IEnumerable<HospitalBloodsDisplayResponse>>(hospital.HospitalBloods);
+            var hospitalBloods = _mapper.Map<IEnumerable<HospitalBloodsDisplayResponse>>(hospital.HospitalBloods);
+            return hospitalBloods;
         }
     }
 }
