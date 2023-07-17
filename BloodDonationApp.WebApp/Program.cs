@@ -27,6 +27,7 @@ builder.Services.AddDbContext<BloodDonationAppDbContext>(opt => opt.UseSqlServer
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(opt =>
                 {
+                    opt.ExpireTimeSpan = TimeSpan.FromMinutes(15);
                     opt.LoginPath = "/Users/Login";
                     opt.AccessDeniedPath = "/Users/AccessDenied";
                     opt.ReturnUrlParameter = "returnUrl";

@@ -2,6 +2,7 @@
 using BloodDonationApp.Business.DTOs.Responses;
 using BloodDonationApp.Business.Services;
 using BloodDonationApp.WebApp.Models.HospitalBlood;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
@@ -26,6 +27,7 @@ namespace BloodDonationApp.WebApp.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Hospital")]
         public async Task<IActionResult> AddNeedForBlood(int id)
         {
             ViewBag.Bloods = await getBloodsForSelectListAsync();
@@ -58,6 +60,7 @@ namespace BloodDonationApp.WebApp.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Hospital")]
         public async Task<IActionResult> ListBloodNeeds(int id)
         {
             if (id == 0)
@@ -85,13 +88,19 @@ namespace BloodDonationApp.WebApp.Controllers
             return hospitalBloodsVM;
         }
 
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> ListHospitalsForNeedsBlood(int id)
         {
             var user = await _userService.GetUserByIdAsync(id);
-            var hospitals = await _hospitalBloodService.GetHospitalListByBloodIdAsync((int)user.BloodId);
+            var hospitals = await _hospitalBloodService.GetHospitalListForNeedsBloodByBloodIdAsync((int)user.BloodId);
+            if (hospitals.Count() <= 0)
+            {
+                ModelState.AddModelError("", "Teşekkür ederiz. Hiçbir hastanenin kan grubunuzdan ihtiyacı bulunmamaktadır.");
+            }
             return View(hospitals);
         }
 
+        [Authorize(Roles = "Hospital")]
         public async Task<IActionResult> Edit(int id)
         {
             int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid).Value);
@@ -121,7 +130,6 @@ namespace BloodDonationApp.WebApp.Controllers
                 if (ModelState.IsValid)
                 {
                     await _hospitalBloodService.UpdateHospitalBloodAsync(request);
-                    int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid).Value);
                     return RedirectToAction(nameof(ListBloodNeeds));
                 }
                 return View();

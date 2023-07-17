@@ -11,7 +11,7 @@ namespace BloodDonationApp.Business.Services
     public interface IHospitalBloodService
     {
         Task AddNeedForBloodAsync(CreateNewHospitalBloodRequest request, int hospitalId);
-        Task<IEnumerable<HospitalDisplayResponse>> GetHospitalListByBloodIdAsync(int bloodId);
+        Task<IEnumerable<HospitalDisplayResponse>> GetHospitalListForNeedsBloodByBloodIdAsync(int bloodId);
         Task<IEnumerable<HospitalBloodsDisplayResponse>> GetHospitalBloodListAsync(int hospitalId);
         Task<bool> IsExistsBloodInHospital(int bloodId, int hospitalId);
         Task<UpdateHospitalBloodRequest> GetHospitalBloodForUpdateAsync(int hospitalId, int bloodId);

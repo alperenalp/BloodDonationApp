@@ -60,9 +60,9 @@ namespace BloodDonationApp.Data.Repositories
                                             .SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IList<Hospital>> GetHospitalListByBloodIdAsync(int bloodId)
+        public async Task<IList<Hospital>> GetHospitalListForNeedsBloodByBloodIdAsync(int bloodId)
         {
-            return await _context.HospitalBloods.Where(x => x.BloodId == bloodId)
+            return await _context.HospitalBloods.Where(x => x.BloodId == bloodId && x.Quantity > 0)
                                                 .Select(y => y.Hospital)
                                                 .ToListAsync();
         }

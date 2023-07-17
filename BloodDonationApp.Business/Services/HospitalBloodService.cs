@@ -40,9 +40,9 @@ namespace BloodDonationApp.Business.Services
             await _hospitalRepository.UpdateAsync(hospital);
         }
 
-        public async Task<IEnumerable<HospitalDisplayResponse>> GetHospitalListByBloodIdAsync(int bloodId)
+        public async Task<IEnumerable<HospitalDisplayResponse>> GetHospitalListForNeedsBloodByBloodIdAsync(int bloodId)
         {
-            var hospitals = await _hospitalRepository.GetHospitalListByBloodIdAsync(bloodId);
+            var hospitals = await _hospitalRepository.GetHospitalListForNeedsBloodByBloodIdAsync(bloodId);
             return _mapper.Map<IEnumerable<HospitalDisplayResponse>>(hospitals);
         }
 

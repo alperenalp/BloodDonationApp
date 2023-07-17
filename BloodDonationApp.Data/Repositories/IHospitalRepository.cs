@@ -10,6 +10,6 @@ namespace BloodDonationApp.Data.Repositories
     public interface IHospitalRepository : IRepository<Hospital>
     {
         Task<Hospital> GetHospitalByIdWithBloodsAsync(int id);
-        Task<IList<Hospital>> GetHospitalListByBloodIdAsync(int bloodId);
+        Task<IList<Hospital>> GetHospitalListForNeedsBloodByBloodIdAsync(int bloodId);
     }
 }
