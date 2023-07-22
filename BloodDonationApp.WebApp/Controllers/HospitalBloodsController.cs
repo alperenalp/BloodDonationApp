@@ -1,7 +1,9 @@
 ﻿using BloodDonationApp.Business.DTOs.Requests;
 using BloodDonationApp.Business.DTOs.Responses;
 using BloodDonationApp.Business.Services;
+using BloodDonationApp.Business.Validators;
 using BloodDonationApp.WebApp.Models.HospitalBlood;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -47,15 +49,24 @@ namespace BloodDonationApp.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AddNeedForBlood(CreateNewHospitalBloodRequest request, int id)
         {
-            if (ModelState.IsValid)
+            CreateHospitalBloodValidator validationRules = new CreateHospitalBloodValidator();
+            ValidationResult results = validationRules.Validate(request);
+            if (results.IsValid)
             {
                 var user = await _userService.GetUserByIdAsync(id);
-                if (!await _hospitalBloodService.IsExistsBloodInHospital(request.BloodId, (int)user.HospitalId))
+                if (!await _hospitalBloodService.IsExistsBloodInHospital((int)request.BloodId, (int)user.HospitalId))
                 {
                     await _hospitalBloodService.AddNeedForBloodAsync(request, (int)user.HospitalId);
                     return View();
                 }
                 ModelState.AddModelError("", "Bu kan ihtiyacı zaten eklenmiş.");
+            }
+            else
+            {
+                foreach (var item in results.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                }
             }
             return View();
         }

@@ -32,9 +32,9 @@ namespace BloodDonationApp.Business.Services
 
             hospital.HospitalBloods.Add(new HospitalBlood
             {
-                BloodId = request.BloodId,
+                BloodId = (int)request.BloodId,
                 HospitalId = hospital.Id,
-                Quantity = request.Quantity,
+                Quantity = (int)request.Quantity,
             });
 
             await _hospitalRepository.UpdateAsync(hospital);
