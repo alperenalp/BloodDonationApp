@@ -6,25 +6,32 @@ using BloodDonationApp.WebApp.Models;
 using Microsoft.AspNetCore.Identity;
 using BloodDonationApp.Business.DTOs.Responses;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MediatR;
+using BloodDonationApp.Business.Features.Queries.GetAllHospital;
+using BloodDonationApp.Business.Features.Commands.CreateHospital;
 
 namespace BloodDonationApp.WebApp.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class HospitalsController : Controller
     {
+        readonly IMediator _mediator;
+
         private readonly IHospitalService _hospitalService;
         private readonly IUserService _userService;
 
-        public HospitalsController(IHospitalService hospitalService, IUserService userService)
+        public HospitalsController(IHospitalService hospitalService, IUserService userService, IMediator mediator)
         {
             _hospitalService = hospitalService;
             _userService = userService;
+            _mediator = mediator;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(GetAllHospitalQueryRequest getAllHospitalQueryRequest)
         {
-            var hospitals = await _hospitalService.GetHospitalListAsync();
-            return View(hospitals);
+            //var hospitals = await _hospitalService.GetHospitalListAsync();
+            var response = await _mediator.Send(getAllHospitalQueryRequest);    
+            return View(response.Hospitals);
         }
 
         public async Task<IActionResult> Create()
@@ -33,11 +40,12 @@ namespace BloodDonationApp.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateNewHospitalRequest request)
+        public async Task<IActionResult> Create(CreateHospitalCommandRequest createHospitalCommandRequest)
         {
             if (ModelState.IsValid)
             {
-                await _hospitalService.CreateHospitalAsync(request);
+                var response = await _mediator.Send(createHospitalCommandRequest);
+                //await _hospitalService.CreateHospitalAsync(request);
                 return Redirect(nameof(Index));
             }
             return View();

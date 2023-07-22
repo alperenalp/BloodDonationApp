@@ -1,3 +1,4 @@
+using BloodDonationApp.Business;
 using BloodDonationApp.Business.Services;
 using BloodDonationApp.Business.Services.Mappings;
 using BloodDonationApp.Data.Contexts;
@@ -10,14 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, EFUserRepository>();
-builder.Services.AddScoped<IHospitalService, HospitalService>();
 builder.Services.AddScoped<IHospitalRepository, EFHospitalRepository>();
-builder.Services.AddScoped<IBloodService, BloodService>();
 builder.Services.AddScoped<IBloodRepository, EFBloodRepository>();
-builder.Services.AddScoped<IHospitalBloodService, HospitalBloodService>();
 builder.Services.AddScoped<IHospitalBloodRepository, EFHospitalBloodRepository>();
+builder.Services.AddBusinessServices();
 
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
