@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using BloodDonationApp.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BloodDonationApp.Data.Contexts;
 
-public partial class BloodDonationAppDbContext : DbContext
+public partial class BloodDonationAppDbContext : IdentityDbContext
 {
     public BloodDonationAppDbContext()
     {
@@ -26,6 +27,8 @@ public partial class BloodDonationAppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Blood>(entity =>
         {
             entity.Property(e => e.Type)
