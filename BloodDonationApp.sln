@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodDonationApp.WebApp", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodDonationApp.Business", "BloodDonationApp.Business\BloodDonationApp.Business.csproj", "{49B23577-B55A-4BC1-A6C1-936DB18F6330}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodDonationApp.WebAPI", "BloodDonationApp.WebAPI\BloodDonationApp.WebAPI.csproj", "{85F9F5BD-90CB-4222-B147-E3DCBA4824AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{49B23577-B55A-4BC1-A6C1-936DB18F6330}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49B23577-B55A-4BC1-A6C1-936DB18F6330}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49B23577-B55A-4BC1-A6C1-936DB18F6330}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85F9F5BD-90CB-4222-B147-E3DCBA4824AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85F9F5BD-90CB-4222-B147-E3DCBA4824AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85F9F5BD-90CB-4222-B147-E3DCBA4824AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85F9F5BD-90CB-4222-B147-E3DCBA4824AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

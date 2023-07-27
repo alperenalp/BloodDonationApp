@@ -1,6 +1,7 @@
 using BloodDonationApp.Business;
 using BloodDonationApp.Business.Services;
 using BloodDonationApp.Business.Services.Mappings;
+using BloodDonationApp.Data;
 using BloodDonationApp.Data.Contexts;
 using BloodDonationApp.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -11,10 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IUserRepository, EFUserRepository>();
-builder.Services.AddScoped<IHospitalRepository, EFHospitalRepository>();
-builder.Services.AddScoped<IBloodRepository, EFBloodRepository>();
-builder.Services.AddScoped<IHospitalBloodRepository, EFHospitalBloodRepository>();
+builder.Services.AddDataServices();
 builder.Services.AddBusinessServices();
 
 builder.Services.AddAutoMapper(typeof(MapProfile));

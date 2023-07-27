@@ -15,9 +15,8 @@ namespace BloodDonationApp.WebApp.Controllers
     [Authorize(Roles = "Admin")]
     public class HospitalsController : Controller
     {
-        readonly IMediator _mediator;
-
-        private readonly IHospitalService _hospitalService;
+        private readonly IMediator _mediator;
+        private readonly IHospitalService _hospitalService; 
         private readonly IUserService _userService;
 
         public HospitalsController(IHospitalService hospitalService, IUserService userService, IMediator mediator)

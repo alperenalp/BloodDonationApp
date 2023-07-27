@@ -1,4 +1,5 @@
 ﻿using BloodDonationApp.Business.Services;
+using BloodDonationApp.Business.Services.Mappings;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -14,6 +15,7 @@ namespace BloodDonationApp.Business
         public static void AddBusinessServices(this IServiceCollection services)
         {
             services.AddMediatR(typeof(ServiceRegistration));
+            services.AddAutoMapper(typeof(MapProfile));
             services.AddScoped<IHospitalBloodService, HospitalBloodService>();
             services.AddScoped<IHospitalService, HospitalService>();
             services.AddScoped<IBloodService, BloodService>();

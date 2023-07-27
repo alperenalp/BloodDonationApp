@@ -38,7 +38,7 @@ namespace BloodDonationApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Bloods");
+                    b.ToTable("Bloods", (string)null);
                 });
 
             modelBuilder.Entity("BloodDonationApp.Entities.Hospital", b =>
@@ -65,7 +65,7 @@ namespace BloodDonationApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Hospitals");
+                    b.ToTable("Hospitals", (string)null);
                 });
 
             modelBuilder.Entity("BloodDonationApp.Entities.HospitalBlood", b =>
@@ -84,7 +84,7 @@ namespace BloodDonationApp.Data.Migrations
 
                     b.HasIndex("HospitalId");
 
-                    b.ToTable("HospitalBloods");
+                    b.ToTable("HospitalBloods", (string)null);
                 });
 
             modelBuilder.Entity("BloodDonationApp.Entities.User", b =>
@@ -138,7 +138,7 @@ namespace BloodDonationApp.Data.Migrations
 
                     b.HasIndex("HospitalId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
