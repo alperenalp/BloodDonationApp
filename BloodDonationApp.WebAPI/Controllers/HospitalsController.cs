@@ -1,12 +1,14 @@
 ﻿using BloodDonationApp.Business.DTOs.Requests;
 using BloodDonationApp.Business.Features.Commands.CreateHospital;
 using BloodDonationApp.Business.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BloodDonationApp.WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/hospitals")]
     [ApiController]
     public class HospitalsController : ControllerBase
@@ -36,6 +38,7 @@ namespace BloodDonationApp.WebAPI.Controllers
             return Ok(hospital);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateHospital([FromBody] CreateNewHospitalRequest request)
         {
@@ -47,6 +50,7 @@ namespace BloodDonationApp.WebAPI.Controllers
             return BadRequest(ModelState);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateHospitalById([FromRoute(Name = "id")] int id, [FromBody] UpdateHospitalRequest request)
         {
@@ -71,6 +75,7 @@ namespace BloodDonationApp.WebAPI.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteHospitalById([FromRoute(Name = "id")] int id)
         {
