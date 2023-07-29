@@ -12,7 +12,8 @@ namespace BloodDonationApp.Business.DTOs.Requests
         [Display(Name = "Kan Grubu")]
         public int? BloodId { get; set; }
 
-        [Display(Name = "Kan İhtiyacı")]
+        [Display(Name = "Kan Ünitesi İhtiyacı")]
+        [Range(1, int.MaxValue, ErrorMessage = "Değer 1'eşit veya daha büyük bir sayı olmalıdır.")]
         public int? Quantity { get; set; }
     }
 }

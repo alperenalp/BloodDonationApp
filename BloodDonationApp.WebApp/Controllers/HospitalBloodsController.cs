@@ -68,6 +68,7 @@ namespace BloodDonationApp.WebApp.Controllers
                     ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
                 }
             }
+            ViewBag.Bloods = await getBloodsForSelectListAsync();
             return View();
         }
 
