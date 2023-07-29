@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using BloodDonationApp.WebApp.Models.User;
+using Azure.Core;
 
 namespace BloodDonationApp.WebApp.Controllers
 {
@@ -24,11 +25,8 @@ namespace BloodDonationApp.WebApp.Controllers
             _hospitalService = hospitalService;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            return View();
-        }
-
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> AddHospitalUserToUsers()
         {
             ViewBag.Hospitals = await getHospitalsForSelectListAsync();
@@ -41,6 +39,7 @@ namespace BloodDonationApp.WebApp.Controllers
             return hospitals.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AddHospitalUserToUsers(CreateNewHospitalUserRequest request)
         {
@@ -52,6 +51,8 @@ namespace BloodDonationApp.WebApp.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> GetHospitalUsers()
         {
             var hospitalUsers = await getHospitalUsersVM();
@@ -145,6 +146,31 @@ namespace BloodDonationApp.WebApp.Controllers
         public async Task<IActionResult> AccessDenied()
         {
             return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> EditHospitalUser(int id)
+        {
+            ViewBag.Hospitals = await getHospitalsForSelectListAsync();
+            var hospitalUser = await _userService.GetHospitalUserByIdForUpdateAsync(id);
+            return View(hospitalUser);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditHospitalUser(int id, UpdateHospitalUserRequest request)
+        {
+            var isUserExists = await _userService.IsUserExistsAsync(id);
+            if (isUserExists)
+            {
+                if (ModelState.IsValid)
+                {
+                    await _userService.UpdateHospitalUserAsync(request);
+                    return RedirectToAction(nameof(GetHospitalUsers));
+                }
+                return View(ModelState);
+            }
+            return NotFound();
         }
     }
 }

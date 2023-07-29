@@ -39,13 +39,13 @@ namespace BloodDonationApp.Business.Services
         public async Task<IEnumerable<UserDisplayResponse>> GetUserListAsync()
         {
             var users = await _userRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<UserDisplayResponse>>(users);    
+            return _mapper.Map<IEnumerable<UserDisplayResponse>>(users);
         }
 
         public async Task<IEnumerable<HospitalUserDisplayResponse>> GetHospitalUserListAsync()
         {
             var users = await _userRepository.GetAllAsync();
-            var response = users.Where(x=>x.Type=="Hospital").ToList();
+            var response = users.Where(x => x.Type == "Hospital").ToList();
             return _mapper.Map<IEnumerable<HospitalUserDisplayResponse>>(response);
         }
 
@@ -60,6 +60,24 @@ namespace BloodDonationApp.Business.Services
         {
             var user = await _userRepository.GetByIdAsync(id);
             return _mapper.Map<UserDisplayResponse>(user);
+        }
+
+        public async Task<bool> IsUserExistsAsync(int id)
+        {
+            return await _userRepository.IsExistsAsync(id);
+        }
+
+        public async Task UpdateHospitalUserAsync(UpdateHospitalUserRequest request)
+        {
+            var hospitalUser = _mapper.Map<User>(request);
+            hospitalUser.Type = "Hospital";
+            await _userRepository.UpdateAsync(hospitalUser);
+        }
+
+        public async Task<UpdateHospitalUserRequest> GetHospitalUserByIdForUpdateAsync(int id)
+        {
+            var hospitalUser = await _userRepository.GetByIdAsync(id);
+            return _mapper.Map<UpdateHospitalUserRequest>(hospitalUser);
         }
     }
 }

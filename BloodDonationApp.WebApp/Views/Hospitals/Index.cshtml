@@ -44,7 +44,8 @@
                         </td>
                         <td>
                             <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>
-@*                            @Html.ActionLink("Edit", "Edit", new { id = item.Id}) |
+                            @Html.ActionLink("Hastane Sil", "Delete", new { id = item.Id}, new {@class="btn btn-danger", onclick = "return confirm('Silmek istediğinize emin misiniz?');" })
+@*                          @Html.ActionLink("Edit", "Edit", new { id = item.Id}) |
                             @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                             @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
                         </td>
