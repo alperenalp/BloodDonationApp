@@ -18,6 +18,13 @@ namespace BloodDonationApp.Data.Repositories
             _context = context;
         }
 
+        public async Task DeleteAsync(int bloodId, int hospitalId)
+        {
+            var hospitalBlood = await _context.HospitalBloods.SingleOrDefaultAsync(x => x.HospitalId == hospitalId && x.BloodId == bloodId);
+            _context.HospitalBloods.Remove(hospitalBlood);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<HospitalBlood?> GetHospitalBloodAsync(int hospitalId, int bloodId)
         {
             return await _context.HospitalBloods.SingleOrDefaultAsync(x => x.HospitalId == hospitalId && x.BloodId == bloodId);

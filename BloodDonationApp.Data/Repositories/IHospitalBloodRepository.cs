@@ -9,6 +9,7 @@ namespace BloodDonationApp.Data.Repositories
 {
     public interface IHospitalBloodRepository
     {
+        Task DeleteAsync(int bloodId, int hospitalId);
         Task<HospitalBlood?> GetHospitalBloodAsync(int hospitalId, int bloodId);
         Task<bool> isExists(int bloodId, int hospitalId);
         Task UpdateHospitalBloodAsync(HospitalBlood hospitalBlood);

@@ -1,7 +1,9 @@
-﻿using BloodDonationApp.Business.DTOs.Requests;
+﻿using Azure.Core;
+using BloodDonationApp.Business.DTOs.Requests;
 using BloodDonationApp.Business.DTOs.Responses;
 using BloodDonationApp.Business.Services;
 using BloodDonationApp.Business.Validators;
+using BloodDonationApp.Entities;
 using BloodDonationApp.WebApp.Models.HospitalBlood;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
@@ -57,7 +59,7 @@ namespace BloodDonationApp.WebApp.Controllers
                 if (!await _hospitalBloodService.IsExistsBloodInHospital((int)request.BloodId, (int)user.HospitalId))
                 {
                     await _hospitalBloodService.AddNeedForBloodAsync(request, (int)user.HospitalId);
-                    return View();
+                    return RedirectToAction(nameof(ListBloodNeeds));
                 }
                 ModelState.AddModelError("", "Bu kan ihtiyacı zaten eklenmiş.");
             }
@@ -145,6 +147,20 @@ namespace BloodDonationApp.WebApp.Controllers
                     return RedirectToAction(nameof(ListBloodNeeds));
                 }
                 return View();
+            }
+            return NotFound();
+        }
+
+        [Authorize(Roles = "Hospital")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid).Value);
+            var user = await _userService.GetUserByIdAsync(userId);
+            var isHospitalBloodExists = await _hospitalBloodService.IsExistsBloodInHospital(id, (int)user.HospitalId);
+            if (isHospitalBloodExists)
+            {
+                await _hospitalBloodService.DeleteHospitalBloodAsync(id, (int)user.HospitalId);
+                return RedirectToAction(nameof(ListBloodNeeds));
             }
             return NotFound();
         }

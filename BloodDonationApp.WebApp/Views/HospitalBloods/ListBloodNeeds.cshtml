@@ -32,9 +32,10 @@
                         </td>
                         <td>
                             <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.BloodId">Düzenle</a>
-                         @*   @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                            @Html.ActionLink("İhtiyaç Sil", "Delete", new { id = item.BloodId}, new {@class="btn btn-danger", onclick = "return confirm('Silmek istediğinize emin misiniz?');" })
+                            @*   @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
                         </td>
                     </tr>
                 }

@@ -16,5 +16,6 @@ namespace BloodDonationApp.Business.Services
         Task<bool> IsExistsBloodInHospital(int bloodId, int hospitalId);
         Task<UpdateHospitalBloodRequest> GetHospitalBloodForUpdateAsync(int hospitalId, int bloodId);
         Task UpdateHospitalBloodAsync(UpdateHospitalBloodRequest request);
+        Task DeleteHospitalBloodAsync(int bloodId, int hospitalId);
     }
 }
