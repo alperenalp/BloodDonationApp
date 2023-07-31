@@ -50,6 +50,7 @@ namespace BloodDonationApp.WebAPI.Controllers
 
                     Claim[] claims = new Claim[]
                     {
+                        new Claim(ClaimTypes.PrimarySid, user.Id.ToString()),
                         new Claim(ClaimTypes.Name, user.Username),
                         new Claim(ClaimTypes.Role, user.Type),
                     };
