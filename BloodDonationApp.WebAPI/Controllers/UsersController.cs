@@ -6,6 +6,7 @@ using System.Data;
 
 namespace BloodDonationApp.WebAPI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/users")]
     [ApiController]
     public class UsersController : ControllerBase

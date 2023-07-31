@@ -21,10 +21,17 @@ namespace BloodDonationApp.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<BloodTypeResponse>> GetAllBloodsAsync()
+        public async Task<IEnumerable<BloodDisplayResponse>> GetAllBloodsAsync()
         {
             var bloods = await _bloodRepository.GetAllAsync();
-            var response = _mapper.Map<IEnumerable<BloodTypeResponse>>(bloods);
+            var response = _mapper.Map<IEnumerable<BloodDisplayResponse>>(bloods);
+            return response;
+        }
+
+        public async Task<BloodDisplayResponse> GetBloodByIdAsync(int id)
+        {
+            var blood = await _bloodRepository.GetByIdAsync(id);
+            var response = _mapper.Map<BloodDisplayResponse>(blood);
             return response;
         }
 

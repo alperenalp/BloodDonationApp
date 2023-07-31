@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BloodDonationApp.Business.DTOs.Responses
 {
-    public class BloodTypeResponse
+    public class BloodDisplayResponse
     {
         public int Id { get; set; }
 
