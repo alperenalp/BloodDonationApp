@@ -79,5 +79,16 @@ namespace BloodDonationApp.Business.Services
             var hospitalUser = await _userRepository.GetByIdAsync(id);
             return _mapper.Map<UpdateHospitalUserRequest>(hospitalUser);
         }
+
+        public async Task DeleteUserAsync(int id)
+        {
+            await _userRepository.DeleteAsync(id);
+        }
+
+        public async Task UpdateUserAsync(UpdateUserRequest request)
+        {
+            var user = _mapper.Map<User>(request);
+            await _userRepository.UpdateAsync(user);
+        }
     }
 }

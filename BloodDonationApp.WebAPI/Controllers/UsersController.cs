@@ -1,13 +1,8 @@
 ﻿using BloodDonationApp.Business.DTOs.Requests;
 using BloodDonationApp.Business.Services;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
+using System.Data;
 
 namespace BloodDonationApp.WebAPI.Controllers
 {
@@ -16,16 +11,32 @@ namespace BloodDonationApp.WebAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IConfiguration _configuration;
 
-        public UsersController(IUserService userService, IConfiguration configuration)
+        public UsersController(IUserService userService)
         {
             _userService = userService;
-            _configuration = configuration;
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] CreateNewUserRequest request)
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await _userService.GetUserListAsync();
+            return Ok(users);
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetUserById([FromRoute(Name = "id")] int id)
+        {
+            var user = await _userService.GetUserByIdAsync(id);
+
+            if (user is null)
+                return NotFound();
+
+            return Ok(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUser([FromBody] CreateNewUserRequest request)
         {
             if (ModelState.IsValid)
             {
@@ -35,40 +46,45 @@ namespace BloodDonationApp.WebAPI.Controllers
             return BadRequest(ModelState);
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] ValidateUserLoginRequest request)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateUserById([FromRoute(Name = "id")] int id, [FromBody] UpdateUserRequest request)
         {
-            if (ModelState.IsValid)
+            var isHospitalExists = await _userService.IsUserExistsAsync(id);
+            if (isHospitalExists)
             {
-                var user = await _userService.ValidateUserAsync(request);
-                if (user != null)
+                if (request.Id == id)
                 {
-                    var jwtSettings = _configuration.GetSection("JwtSettings");
-                    var key = Encoding.UTF8.GetBytes(jwtSettings["secretKey"]);
-                    var securityKey = new SymmetricSecurityKey(key);
-                    var credential = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-                    Claim[] claims = new Claim[]
+                    if (ModelState.IsValid)
                     {
-                        new Claim(ClaimTypes.Name, user.Username),
-                        new Claim(ClaimTypes.Role, user.Type),
-                    };
-
-                    var token = new JwtSecurityToken(
-                        issuer: jwtSettings["validIssuer"],
-                        audience: jwtSettings["validAudience"],
-                        claims: claims,
-                        notBefore: DateTime.Now,
-                        expires: DateTime.Now.AddMinutes(10),
-                        signingCredentials: credential
-                        );
-
-                    return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+                        await _userService.UpdateUserAsync(request);
+                        return Ok(request);
+                    }
+                    return BadRequest(ModelState);
                 }
-                ModelState.AddModelError("", "Kullanıcı adı veya şifre yanlış");
+                return BadRequest(new
+                {
+                    StatusCode = 400,
+                    Message = $"Hospital with id:{id} could not match request with id:{request.Id}"
+                });
             }
-            return BadRequest(ModelState);
+            return NotFound();
         }
 
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteUserById([FromRoute(Name = "id")] int id)
+        {
+            var isHospitalExists = await _userService.IsUserExistsAsync(id);
+            if (isHospitalExists)
+            {
+                await _userService.DeleteUserAsync(id);
+                return NoContent();
+            }
+
+            return NotFound(new
+            {
+                StatusCode = 404,
+                Message = $"Hospital with id:{id} could not found."
+            });
+        }
     }
 }

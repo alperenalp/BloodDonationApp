@@ -45,9 +45,16 @@ namespace BloodDonationApp.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _userService.CreateHospitalUserAsync(request);
-                return RedirectToAction("GetHospitalUsers", "Users");
+                if (request.HospitalId != 0)
+                {
+                    await _userService.CreateHospitalUserAsync(request);
+                    return RedirectToAction("GetHospitalUsers", "Users");
+                }
+                ViewBag.Hospitals = await getHospitalsForSelectListAsync();
+                ModelState.AddModelError("", "Lütfen bir hastane seçiniz.");
+                return View();
             }
+            ViewBag.Hospitals = await getHospitalsForSelectListAsync();
             return View();
         }
 
@@ -169,6 +176,18 @@ namespace BloodDonationApp.WebApp.Controllers
                     return RedirectToAction(nameof(GetHospitalUsers));
                 }
                 return View(ModelState);
+            }
+            return NotFound();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var isUserExists = await _userService.IsUserExistsAsync(id);
+            if (isUserExists)
+            {
+                await _userService.DeleteUserAsync(id);
+                return RedirectToAction(nameof(GetHospitalUsers));
             }
             return NotFound();
         }
