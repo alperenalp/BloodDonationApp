@@ -3,19 +3,22 @@ using BloodDonationApp.Business.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Security.Claims;
 
 namespace BloodDonationApp.WebAPI.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [Route("api/users")]
     [ApiController]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IHospitalBloodService _hospitalBloodService;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IHospitalBloodService hospitalBloodService)
         {
             _userService = userService;
+            _hospitalBloodService = hospitalBloodService;
         }
 
         [HttpGet]
@@ -36,6 +39,7 @@ namespace BloodDonationApp.WebAPI.Controllers
             return Ok(user);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] CreateNewUserRequest request)
         {
@@ -47,6 +51,7 @@ namespace BloodDonationApp.WebAPI.Controllers
             return BadRequest(ModelState);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateUserById([FromRoute(Name = "id")] int id, [FromBody] UpdateUserRequest request)
         {
@@ -71,6 +76,7 @@ namespace BloodDonationApp.WebAPI.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteUserById([FromRoute(Name = "id")] int id)
         {
@@ -87,5 +93,21 @@ namespace BloodDonationApp.WebAPI.Controllers
                 Message = $"Hospital with id:{id} could not found."
             });
         }
+
+
+        [Authorize(Roles = "User")]
+        [HttpGet("hospitalneeds")]
+        public async Task<IActionResult> GetAllHospitalsForBloodNeeds()
+        {
+            var userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid).Value);
+            var user = await _userService.GetUserByIdAsync(userId);
+            var hospitals = await _hospitalBloodService.GetHospitalListForNeedsBloodByBloodIdAsync((int)user.BloodId);
+            if (hospitals.Count() == 0)
+            {
+                ModelState.AddModelError("", "Teşekkür ederiz. Hiçbir hastanenin kan grubunuzdan ihtiyacı bulunmamaktadır.");
+            }
+            return Ok(hospitals);
+        }
+
     }
 }
