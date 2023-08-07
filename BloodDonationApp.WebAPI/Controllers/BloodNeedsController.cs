@@ -36,9 +36,8 @@ namespace BloodDonationApp.WebAPI.Controllers
         }
 
         [Authorize(Roles = "Hospital")]
-        [HttpPost("{bloodId:int}")]
-        public async Task<IActionResult> CreateBloodNeed([FromRoute(Name = "bloodId")] int bloodId,
-            [FromBody] CreateNewHospitalBloodRequest request)
+        [HttpPost]
+        public async Task<IActionResult> CreateBloodNeed([FromBody] CreateNewHospitalBloodRequest request)
         {
             CreateHospitalBloodValidator validationRules = new CreateHospitalBloodValidator();
             ValidationResult results = validationRules.Validate(request);
@@ -46,24 +45,13 @@ namespace BloodDonationApp.WebAPI.Controllers
             {
                 var userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.PrimarySid).Value);
                 var user = await _userService.GetUserByIdAsync(userId);
-                if (request.BloodId == bloodId)
+                var isExistsBloodInHospital = await _hospitalBloodService.IsExistsBloodInHospital((int)request.BloodId, (int)user.HospitalId);
+                if (!isExistsBloodInHospital)
                 {
-                    var isExistsBloodInHospital = await _hospitalBloodService.IsExistsBloodInHospital((int)request.BloodId, (int)user.HospitalId);
-                    if (!isExistsBloodInHospital)
-                    {
-                        await _hospitalBloodService.AddNeedForBloodAsync(request, (int)user.HospitalId);
-                        return StatusCode(201, request);
-                    }
-                    ModelState.AddModelError("", "Bu kan ihtiyacı zaten eklenmiş.");
+                    await _hospitalBloodService.AddNeedForBloodAsync(request, (int)user.HospitalId);
+                    return StatusCode(201, request);
                 }
-                else
-                {
-                    return BadRequest(new
-                    {
-                        StatusCode = 400,
-                        Message = $"BloodId with id:{bloodId} could not match request with id:{request.BloodId}"
-                    });
-                }
+                ModelState.AddModelError("", "Bu kan ihtiyacı zaten eklenmiş.");
             }
             else
             {

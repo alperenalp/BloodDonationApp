@@ -9,5 +9,6 @@ namespace BloodDonationApp.Data.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {
+        Task<bool> IsExistsUserByUsernameAsync(string username);
     }
 }

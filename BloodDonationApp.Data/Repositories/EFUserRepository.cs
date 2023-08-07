@@ -44,7 +44,12 @@ namespace BloodDonationApp.Data.Repositories
 
         public async Task<bool> IsExistsAsync(int id)
         {
-            return await _context.Users.AnyAsync(x => x.Id == id);  
+            return await _context.Users.AnyAsync(x => x.Id == id);
+        }
+
+        public async Task<bool> IsExistsUserByUsernameAsync(string username)
+        {
+            return await _context.Users.AnyAsync(x => x.Username == username);
         }
 
         public async Task UpdateAsync(User entity)

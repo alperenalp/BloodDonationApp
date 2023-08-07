@@ -90,5 +90,10 @@ namespace BloodDonationApp.Business.Services
             var user = _mapper.Map<User>(request);
             await _userRepository.UpdateAsync(user);
         }
+
+        public async Task<bool> IsExistsUserByUsernameAsync(string username)
+        {
+            return await _userRepository.IsExistsUserByUsernameAsync(username);
+        }
     }
 }

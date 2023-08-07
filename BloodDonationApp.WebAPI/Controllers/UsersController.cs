@@ -45,8 +45,13 @@ namespace BloodDonationApp.WebAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _userService.CreateUserAsync(request);
-                return StatusCode(201, request);
+                bool userIsExists = await _userService.IsExistsUserByUsernameAsync(request.Username);
+                if (!userIsExists)
+                {
+                    await _userService.CreateUserAsync(request);
+                    return StatusCode(201, request);
+                }
+                ModelState.AddModelError("", "Bu kullanıcı zaten eklenmiş");
             }
             return BadRequest(ModelState);
         }

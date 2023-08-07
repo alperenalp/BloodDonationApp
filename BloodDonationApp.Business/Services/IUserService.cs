@@ -21,5 +21,6 @@ namespace BloodDonationApp.Business.Services
         Task UpdateHospitalUserAsync(UpdateHospitalUserRequest request);
         Task UpdateUserAsync(UpdateUserRequest request);
         Task<UserValidateResponse> ValidateUserAsync(ValidateUserLoginRequest request);
+        Task<bool> IsExistsUserByUsernameAsync(string username);
     }
 }
